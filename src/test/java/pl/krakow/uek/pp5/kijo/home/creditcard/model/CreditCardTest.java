@@ -46,10 +46,14 @@ public class CreditCardTest {
 
     @Test // sprawdzamy funkcję wypłacania pieniędzy z karty
     public void withdrawFromCard(){
-        CreditCard card = new CreditCard("1234-1234"); // tworzymy nową kartę
-        card.assignLimit(BigDecimal.valueOf(1000)); // przypisujemy karcie 1000 monet
-        card.withdraw(BigDecimal.valueOf(500)); // wypłacamy z karty 500 monet
-        Assert.assertEquals(card.currentBalance(), BigDecimal.valueOf(500)); // zakładamy, że currentBalance jest rowny 500 (1000 - 500 = 500)
+        CreditCard card1 = new CreditCard("1234-1234"); // tworzymy nową kartę
+        CreditCard card2 = new CreditCard("1234-1234"); // tworzymy nową kartę
+        card1.assignLimit(BigDecimal.valueOf(1000)); // przypisujemy karcie 1000 monet
+        card2.assignLimit(BigDecimal.valueOf(1000)); // przypisujemy karcie 1000 monet
+        card1.withdraw(BigDecimal.valueOf(500)); // wypłacamy z karty 500 monet
+        card2.withdraw(BigDecimal.valueOf(200)); // wypłacamy z karty 200 monet
+        Assert.assertEquals(card1.currentBalance(), BigDecimal.valueOf(500)); // zakładamy, że currentBalance jest rowny 500 (1000 - 500 = 500)
+        Assert.assertEquals(card2.currentBalance(), BigDecimal.valueOf(800)); // zakładamy, że currentBalance jest rowny 500 (1000 - 200 = 800)
     }
 
 }
