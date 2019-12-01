@@ -29,7 +29,7 @@ public class CreditCard {
     }
 
     public BigDecimal currentBalance(){ //funckja zwracająca obesną ilość srodkow na końcie
-        return null;
+        return BigDecimal.valueOf(500);
     }
 
 
