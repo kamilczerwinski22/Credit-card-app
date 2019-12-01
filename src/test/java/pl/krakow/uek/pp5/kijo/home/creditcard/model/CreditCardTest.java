@@ -43,4 +43,13 @@ public class CreditCardTest {
         Assert.assertTrue(card.getLimit().equals(BigDecimal.valueOf(100))); // "Asserts that a condition is true. If it isn't it throws an AssertionError without a message." Zakładamy że limit który
                                                                             // dostaniemy z gettera card.getLimit() będzie równy 100
     }
+
+    @Test // sprawdzamy funkcję wypłacania pieniędzy z karty
+    public void withdrawFromCard(){
+        CreditCard card = new CreditCard("1234-1234"); // tworzymy nową kartę
+        card.assignLimit(BigDecimal.valueOf(1000)); // przypisujemy karcie 1000 monet
+        card.withdraw(BigDecimal.valueOf(500)); // wypłacamy z karty 500 monet
+        Assert.assertEquals(card.currentBalance(), BigDecimal.valueOf(500)); // zakładamy, że currentBalance jest rowny 500 (1000 - 500 = 500)
+    }
+
 }

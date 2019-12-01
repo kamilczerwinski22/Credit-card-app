@@ -23,4 +23,14 @@ public class CreditCard {
     public BigDecimal getLimit() { // getter limitu karty
         return cardLimit;
     }
+
+    public void withdraw(BigDecimal money){ //funkcja do wypłat monety
+
+    }
+
+    public BigDecimal currentBalance(){ //funckja zwracająca obesną ilość srodkow na końcie
+        return null;
+    }
+
+
 }
