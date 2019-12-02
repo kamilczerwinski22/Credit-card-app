@@ -1,6 +1,7 @@
 package pl.krakow.uek.pp5.kijo.home.creditcard.model;
 
 import pl.krakow.uek.pp5.kijo.home.creditcard.model.exceptions.CreditBelowMinimumException;
+import pl.krakow.uek.pp5.kijo.home.creditcard.model.exceptions.NotEnoughtMoneyException;
 
 import java.math.BigDecimal;
 public class CreditCard {
@@ -27,6 +28,10 @@ public class CreditCard {
     }
 
     public void withdraw(BigDecimal money){ //funkcja do wypłat monety
+        if (currentBalance().compareTo(money) == -1) { // compareTo zwraca -1 jeśli druga wartośc jest większa od pierwszej, czyli jeżeli ilośc monet ktora chcemy wypłac
+                                                       // będzie większa niż nasz balans konta, wyrzuci błąd
+            throw new NotEnoughtMoneyException();
+        }
         cardBalance = cardBalance.subtract(money); // od balansu na karcie odejmujemy podaną do funkcji wartosc
     }
 

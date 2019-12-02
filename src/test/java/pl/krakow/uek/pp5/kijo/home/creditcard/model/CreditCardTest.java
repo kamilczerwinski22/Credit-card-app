@@ -6,6 +6,7 @@ package pl.krakow.uek.pp5.kijo.home.creditcard.model;
 import org.junit.Assert;
 import org.junit.Test;
 import pl.krakow.uek.pp5.kijo.home.creditcard.model.exceptions.CreditBelowMinimumException;
+import pl.krakow.uek.pp5.kijo.home.creditcard.model.exceptions.NotEnoughtMoneyException;
 
 import java.math.BigDecimal;
 
@@ -53,7 +54,14 @@ public class CreditCardTest {
         card1.withdraw(BigDecimal.valueOf(500)); // wypłacamy z karty 500 monet
         card2.withdraw(BigDecimal.valueOf(200)); // wypłacamy z karty 200 monet
         Assert.assertEquals(card1.currentBalance(), BigDecimal.valueOf(500)); // zakładamy, że currentBalance jest rowny 500 (1000 - 500 = 500)
-        Assert.assertEquals(card2.currentBalance(), BigDecimal.valueOf(800)); // zakładamy, że currentBalance jest rowny 500 (1000 - 200 = 800)
+        Assert.assertEquals(card2.currentBalance(),  BigDecimal.valueOf(800)); // zakładamy, że currentBalance jest rowny 500 (1000 - 200 = 800)
     }
 
+    @Test(expected = NotEnoughtMoneyException.class) // sprawdzamy co sie stanie jesli chcemy wypłacić więcej monet niz mamy na saldzie .. Test sie powiedzie jeśli metoda wyrzuci nam ten konkretny błąd
+    public void denyWithdrawBelowCurrentBalance(){
+        CreditCard card = new CreditCard("1234-1234"); // tworzymy nową kartę
+        card.assignLimit(BigDecimal.valueOf(1000)); //dopisujemy wartość do karty
+        card.withdraw(BigDecimal.valueOf(600)); // odejmujemy z karty 600 monet - zostało 400
+        card.withdraw(BigDecimal.valueOf(600)); // chcemy odjąc z karty 600 monet - na karcie jest 400, powinnien wyskoczyc blad
+    }
 }
