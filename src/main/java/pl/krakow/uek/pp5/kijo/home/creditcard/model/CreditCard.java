@@ -4,7 +4,7 @@ import pl.krakow.uek.pp5.kijo.home.creditcard.model.exceptions.CreditBelowMinimu
 import pl.krakow.uek.pp5.kijo.home.creditcard.model.exceptions.NotEnoughtMoneyException;
 
 import java.math.BigDecimal;
-public class CreditCard {
+public class CreditCard { // przerabiamy to z public class CreditCard na class CreditCard - teraz bedziemy korzystac z fasady
 
     private final String cardNumber; // Tworzymy zmienną do numeru karty
     private BigDecimal cardLimit; // Tworzy zmienną do limitu karty
