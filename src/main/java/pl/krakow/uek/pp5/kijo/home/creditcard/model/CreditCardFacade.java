@@ -1,9 +1,18 @@
 package pl.krakow.uek.pp5.kijo.home.creditcard.model;
 
-import java.math.BigDecimal;
 
-public class CreditCardFacade {  // fasada karty, czyli tak jakby uproszczony inferace
-    public void withdrawFromCard(String creditCardNumber, BigDecimal withdrawValue){
+public class CreditCardFacade {
+    private final InMemoryCreditCardStorage storage;
 
+    public CreditCardFacade(InMemoryCreditCardStorage storage) {
+        this.storage = storage;
+    }
+
+    public void withdraw(WithdrawCommand withdrawCommand) {
+        CreditCard cc = this.storage.load(withdrawCommand.getCreditCardNumber());
+
+        cc.withdraw(withdrawCommand.getValueOf());
+
+        storage.add(cc);
     }
 }

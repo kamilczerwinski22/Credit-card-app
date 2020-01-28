@@ -1,43 +1,44 @@
 package pl.krakow.uek.pp5.kijo.home.creditcard.model;
 
-import pl.krakow.uek.pp5.kijo.home.creditcard.model.exceptions.CreditBelowMinimumException;
-import pl.krakow.uek.pp5.kijo.home.creditcard.model.exceptions.NotEnoughtMoneyException;
+import pl.krakow.uek.pp5.kijo.home.creditcard.model.exceptions.CreditBelowLimitException;
+import pl.krakow.uek.pp5.kijo.home.creditcard.model.exceptions.NotEnoughMoneyException;
 
 import java.math.BigDecimal;
-public class CreditCard { // przerabiamy to z public class CreditCard na class CreditCard - teraz bedziemy korzystac z fasady
 
-    private final String cardNumber; // Tworzymy zmienną do numeru karty
-    private BigDecimal cardLimit; // Tworzy zmienną do limitu karty
-    private String slogan; // jeszcze nie wiem po co
-    private BigDecimal cardBalance; // Tworzymy zmienną do balansu konta
+public class CreditCard {
+    private final String cardNumber;
+    private BigDecimal cardLimit;
+    private BigDecimal balance;
 
-    public CreditCard(String cardNumber) { // konstruktor naszej klasy CreditCard
+    public CreditCard(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 
-    public void assignLimit(BigDecimal newLimit){ // funkcja ktora przypisze nowy limit do limitu karty
-        if (BigDecimal.valueOf(100).compareTo(newLimit) == 1) { // compareTo zwraca +1 jeśli pierwsza wartość jest większa od drugiej
-            throw new CreditBelowMinimumException();
-        } // Na karcie nie może być mniej niż 100 monet
-        cardLimit = newLimit; // przypisanie zmiennej cardLimit nowej wartosci newLimit podanej jako parametr funkcji
-        cardBalance = cardLimit; // przypisanie limitu karty jako balansu karty
+    public void assignLimit(BigDecimal newLimit) {
+        if (BigDecimal.valueOf(100).compareTo(newLimit) == 1) {
+            throw new CreditBelowLimitException();
+        }
+        cardLimit = newLimit;
+        balance = newLimit;
     }
 
-    public BigDecimal getLimit() { // getter limitu karty
+    public BigDecimal getLimit() {
         return cardLimit;
     }
 
-    public void withdraw(BigDecimal money){ //funkcja do wypłat monety
-        if (currentBalance().compareTo(money) == -1) { // compareTo zwraca -1 jeśli druga wartośc jest większa od pierwszej, czyli jeżeli ilośc monet ktora chcemy wypłac
-                                                       // będzie większa niż nasz balans konta, wyrzuci błąd
-            throw new NotEnoughtMoneyException();
+    public void withdraw(BigDecimal money) {
+        if (balance.compareTo(money) == -1)  {
+            throw new NotEnoughMoneyException();
         }
-        cardBalance = cardBalance.subtract(money); // od balansu na karcie odejmujemy podaną do funkcji wartosc
+
+        balance = balance.subtract(money);
     }
 
-    public BigDecimal currentBalance(){ //funckja zwracająca obesną ilość srodkow na końcie
-        return cardBalance;
+    public BigDecimal getCurrentBalance() {
+        return balance;
     }
 
-
+    public String getNumber() {
+        return cardNumber;
+    }
 }

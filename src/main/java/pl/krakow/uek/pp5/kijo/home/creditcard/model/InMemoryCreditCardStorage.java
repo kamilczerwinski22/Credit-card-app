@@ -1,11 +1,19 @@
 package pl.krakow.uek.pp5.kijo.home.creditcard.model;
 
-public class InMemoryCCStorage {  // klasa odpowiedzalna za przechowywanie danych o kartach
-    public void add(CreditCard card){ //dodanie karty do listy kart
+import java.util.concurrent.ConcurrentHashMap;
 
+public class InMemoryCreditCardStorage {
+    ConcurrentHashMap<String, CreditCard> cards;
+
+    public InMemoryCreditCardStorage() {
+        cards = new ConcurrentHashMap<>();
     }
 
-    public CreditCard load(String creditCardNumber){ // załadowanie karty ??
-        return null;
+    public void add(CreditCard cc) {
+        cards.put(cc.getNumber(), cc);
+    }
+
+    public CreditCard load(String creditCardNumber) {
+        return cards.get(creditCardNumber);
     }
 }

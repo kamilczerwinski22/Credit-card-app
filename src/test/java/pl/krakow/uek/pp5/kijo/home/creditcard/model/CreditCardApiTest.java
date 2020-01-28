@@ -2,45 +2,58 @@ package pl.krakow.uek.pp5.kijo.home.creditcard.model;
 
 import org.junit.Assert;
 import org.junit.Test;
+import pl.krakow.uek.pp5.kijo.home.creditcard.model.exceptions.CreditBelowLimitException;
+import pl.krakow.uek.pp5.kijo.home.creditcard.model.exceptions.NotEnoughMoneyException;
 
 import java.math.BigDecimal;
 
-public class CreditCardApiTest { // Test do fasady
-    public static final BigDecimal WITHDRAW_VALUE = BigDecimal.valueOf(500); // stała zmienna stanowiąca ilość wyplacanych monet - 500
-    public static final String CREDIT_CARD_NUMBER = "1234-5632"; // stała zmienna stanowiąca numer karty
-    public static final int INITIAL_LIMIT = 1000; // stała zmienna stanowiąca limit jaki bedziemy zawsze przypisaywac karcie
-    private InMemoryCCStorage inMemoryCCStorage; // zmienna do klasy przechowywujacej karty ??
-    private CreditCardFacade api; // zmienna do odnoszenia sie do fasady ??
+public class CreditCardTest {
 
-    @Test // test do wypłaty z karty
+    public static final int LIMIT = 2000;
+
+    @Test
+    public void itAllowAssignCreditToCard() {
+        //Arrange / Given
+        CreditCard card = new CreditCard("1234-5678");
+        //Act / When
+        card.assignLimit(BigDecimal.valueOf(LIMIT));
+        //Assert / Then
+        Assert.assertTrue(card.getLimit().equals(BigDecimal.valueOf(LIMIT)));
+    }
+
+    @Test
+    public void creditBelowGeneralLimitIsNotPossible() {
+        //Arrange
+        CreditCard card = new CreditCard("1234-5678");
+        //Act
+
+        //Assert
+        try {
+            card.assignLimit(BigDecimal.valueOf(50));
+            Assert.fail("exception should be thrown");
+        } catch (CreditBelowLimitException e) {
+            Assert.assertTrue(true);
+        }
+    }
+
+    @Test
     public void withdrawFromCard(){
-        thereIsCCStorage(); // funkcja zajmujaca się sprawdzeniem że utworzony jest obiekt do przechowywania danych o kartach ??
-        thereIsCreditCard(); // funckja zajmuje sie potwierdzeniem, że istnieje karta na ktorej mozna przeprowadzac testy
-        thereIsCCApi(); // funkcja zajmuje sei potwierdzeniem ze jest fasada ??
-
-        api.withdrawFromCard(CREDIT_CARD_NUMBER, WITHDRAW_VALUE); // przypisanie na obiekcie fasady do funckcji wypłaty numeru karty oraz wartosci wypłacanych monet ??
-
-        currentBalanceForCCEquals(CREDIT_CARD_NUMBER, BigDecimal.valueOf(500)); //
+        CreditCard card1 = new CreditCard("1234-5678");
+        CreditCard card2 = new CreditCard("1234-5679");
+        card1.assignLimit(BigDecimal.valueOf(1000));
+        card2.assignLimit(BigDecimal.valueOf(1000));
+        card1.withdraw(BigDecimal.valueOf(500));
+        card2.withdraw(BigDecimal.valueOf(100));
+        Assert.assertEquals(BigDecimal.valueOf(500),card1.getCurrentBalance());
+        Assert.assertEquals(BigDecimal.valueOf(900),card2.getCurrentBalance());
     }
 
-    private void thereIsCCStorage() {
-        inMemoryCCStorage = new InMemoryCCStorage(); // tworzymy pamięc dla kart przy uzyćiu wczesniej zadeklarowanej zmiennej ??
-    }
+    @Test(expected = NotEnoughMoneyException.class)
+    public void denyWithdrawBelowBalance() {
+        CreditCard card = new CreditCard("1234-5678");
+        card.assignLimit(BigDecimal.valueOf(1000));
 
-    private void thereIsCreditCard() {
-        CreditCard card = new CreditCard(CREDIT_CARD_NUMBER); // tworzymy nową kartę z danymi stałej CRECREDIT_CARD_NUMBER
-        card.assignLimit(BigDecimal.valueOf(INITIAL_LIMIT)); // przypisujemy naszej karcie ilośc monet podaną we wcześniej zadeklarowanej stałej INITIAL_LIMIT
-
-        inMemoryCCStorage.add(card); // dodajemy kartę do naszej pamięci ??
-    }
-
-    private void thereIsCCApi() {
-        api = new CreditCardFacade(); // zo naszej zmiennej api o typie CreditCardFacade przypisujemy obiekt CreditCardFacade
-    }
-
-    private void currentBalanceForCCEquals(String creditCardNumber, BigDecimal expectedBalance) { // funkcja do sprawdzania obecnego stanu konta
-        CreditCard loaded = inMemoryCCStorage.load(creditCardNumber); // załadowana z pamięci karta ??
-
-        Assert.assertTrue(expectedBalance, loaded.currentBalance()); // zakładamy, że balans który powinien być na karcie, to ten który jest spodziewany
+        card.withdraw(BigDecimal.valueOf(600));
+        card.withdraw(BigDecimal.valueOf(600));
     }
 }
