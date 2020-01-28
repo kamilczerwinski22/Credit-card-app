@@ -28,9 +28,10 @@ public class CreditCardReportingController {
     public List<CardBlanceDto> cardsBalances() {
 
         return Arrays.asList(
-                new CardBlanceDto("1111", BigDecimal.valueOf(223000)),
-                new CardBlanceDto("2233", BigDecimal.valueOf(2500)),
-                new CardBlanceDto("1234", BigDecimal.valueOf(1000))
+                new CardBlanceDto("1111-1111", BigDecimal.valueOf(223000)),
+                new CardBlanceDto("2233-2222", BigDecimal.valueOf(2500)),
+                new CardBlanceDto("1234-2223", BigDecimal.valueOf(1000))
+                new CardBlanceDto("1234-1234", BigDecimal.valueOf(2100))
         );
     }
 
