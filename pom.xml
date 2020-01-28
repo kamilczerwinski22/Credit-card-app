@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>kanclerz.dom</groupId>
-    <artifactId>dom</artifactId>
+    <artifactId>credit-card-app</artifactId>
     <version>1.0</version>
 
     <parent>
