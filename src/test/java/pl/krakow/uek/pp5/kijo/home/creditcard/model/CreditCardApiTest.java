@@ -7,8 +7,6 @@ import pl.krakow.uek.pp5.kijo.home.creditcard.model.exceptions.NotEnoughMoneyExc
 
 import java.math.BigDecimal;
 
-mport java.math.BigDecimal;
-
 public class CreditCardApiTest {
 
     public static final String CREDIT_CARD_NUMBER = "1234-5678";
